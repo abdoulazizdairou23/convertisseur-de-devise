@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Convertisseur de devises avec crypto-monnaies, graphiques, conversion multiple et mode hors ligne">
+  <title>Convertisseur de devises + Crypto</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js pour le graphique -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- IndexedDB wrapper -->
+  <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>
+</head>
+<body>
+  <div class="app" role="main" aria-labelledby="app-title">
+    <div class="header">
+      <h1 id="app-title">🌍 Convertisseur de devises</h1>
+      <div class="header-actions">
+        <button id="offlineStatusBtn" class="status-btn" title="Mode hors ligne">
+          <i class="fas fa-wifi"></i>
+        </button>
+        <div class="theme-selector">
+          <button class="theme-option" data-theme="light" title="Mode clair">☀️</button>
+          <button class="theme-option" data-theme="dark" title="Mode sombre">🌙</button>
+          <button class="theme-option" data-theme="blue" title="Mode océan">🌊</button>
+          <button class="theme-option" data-theme="purple" title="Mode crépuscule">🌆</button>
+          <button class="theme-option" data-theme="green" title="Mode forêt">🌲</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mode hors ligne toggle -->
+    <div class="offline-toggle">
+      <label class="toggle-switch">
+        <input type="checkbox" id="offlineModeToggle">
+        <span class="toggle-slider"></span>
+        <span class="toggle-label">
+          <i class="fas fa-database"></i> Mode hors ligne
+        </span>
+      </label>
+      <span id="lastUpdateInfo" class="last-update"></span>
+    </div>
+    
+    <div class="converter">
+      <div class="input-group">
+        <label for="amount" class="visually-hidden">Montant à convertir</label>
+        <input type="number" id="amount" placeholder="Montant" step="any" required />
+      </div>
+      
+      <div class="select-group">
+        <div class="select-wrapper from-wrapper">
+          <label for="fromCurrency" class="visually-hidden">Devise source</label>
+          <select id="fromCurrency"></select>
+        </div>
+        
+        <button class="swap-btn" id="swapBtn" title="Inverser les devises">
+          <i class="fas fa-exchange-alt"></i>
+        </button>
+        
+        <div class="select-wrapper to-wrapper">
+          <label for="toCurrency" class="visually-hidden">Devise cible</label>
+          <select id="toCurrency"></select>
+        </div>
+      </div>
+      
+      <div class="button-group">
+        <button id="convertBtn" aria-label="Convertir le montant">
+          <i class="fas fa-calculator"></i> Convertir
+        </button>
+      </div>
+    </div>
+    
+    <div id="rate" role="status" aria-live="polite"></div>
+    <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
+    
+    <!-- Conversion multiple -->
+    <div class="multi-converter">
+      <div class="multi-header">
+        <h3>📊 Conversion multiple</h3>
+        <button id="addMultiCurrencyBtn" class="add-btn">
+          <i class="fas fa-plus"></i> Ajouter une devise
+        </button>
+      </div>
+      <div id="multiCurrencyList" class="multi-currency-list">
+        <!-- Les devises multiples seront ajoutées ici dynamiquement -->
+      </div>
+    </div>
+    
+    <!-- Graphique -->
+    <div class="chart-container">
+      <div class="chart-header">
+        <h3>📈 Évolution du taux</h3>
+        <div class="chart-controls">
+          <button class="chart-period" data-period="7">7j</button>
+          <button class="chart-period" data-period="30">30j</button>
+          <button class="chart-period" data-period="90">90j</button>
+          <button class="chart-period active" data-period="180">6m</button>
+        </div>
+      </div>
+      <canvas id="chart" width="400" height="200"></canvas>
+    </div>
+
+    <div class="quick-search">
+      <label for="quickInput" class="visually-hidden">Recherche rapide</label>
+      <input type="text" id="quickInput" placeholder="Ex: USD EUR 100" />
+      <button id="quickBtn" aria-label="Effectuer une recherche rapide">
+        <i class="fas fa-search"></i> Recherche
+      </button>
+    </div>
+
+    <!-- Crypto toggle -->
+    <div class="crypto-toggle">
+      <label class="toggle-switch">
+        <input type="checkbox" id="cryptoToggle">
+        <span class="toggle-slider"></span>
+        <span class="toggle-label">
+          <i class="fa-brands fa-bitcoin"></i> Activer les crypto-monnaies
+        </span>
+      </label>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
